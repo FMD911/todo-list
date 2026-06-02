@@ -2,14 +2,12 @@ import { state } from "./state.js";
 
 const content = document.getElementById("content");
 
-// clear screen
 function clear() {
   content.innerHTML = "";
 }
 
-// render project list (simple for now)
 function renderProjects() {
-  const sidebar = document.createElement("div");
+  const box = document.createElement("div");
 
   state.projects.forEach((project) => {
     const btn = document.createElement("button");
@@ -20,19 +18,20 @@ function renderProjects() {
       renderApp();
     });
 
-    sidebar.appendChild(btn);
+    box.appendChild(btn);
   });
 
-  return sidebar;
+  return box;
 }
 
-// render todos for active project
 function renderTodos() {
-  const container = document.createElement("div");
+  const box = document.createElement("div");
 
   const project = state.projects.find(
     (p) => p.id === state.activeProjectId
   );
+
+  if (!project) return box;
 
   project.todos.forEach((todo) => {
     const card = document.createElement("div");
@@ -43,16 +42,104 @@ function renderTodos() {
       <small>${todo.dueDate} | ${todo.priority}</small>
     `;
 
-    container.appendChild(card);
+    box.appendChild(card);
   });
 
-  return container;
+  return box;
 }
 
-// main render function
+function projectForm() {
+  const form = document.createElement("form");
+
+  const input = document.createElement("input");
+  input.placeholder = "New project";
+
+  const button = document.createElement("button");
+  button.textContent = "Add Project";
+
+  form.append(input, button);
+
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+
+    if (!input.value.trim()) return;
+
+    state.projects.push({
+      id: crypto.randomUUID(),
+      name: input.value,
+      todos: [],
+    });
+
+    input.value = "";
+    renderApp();
+  });
+
+  return form;
+}
+
+function todoForm() {
+  const form = document.createElement("form");
+
+  const title = document.createElement("input");
+  title.placeholder = "Title";
+
+  const desc = document.createElement("input");
+  desc.placeholder = "Description";
+
+  const date = document.createElement("input");
+  date.type = "date";
+
+  const priority = document.createElement("select");
+
+  ["Low", "Medium", "High"].forEach((p) => {
+    const opt = document.createElement("option");
+    opt.value = p;
+    opt.textContent = p;
+    priority.appendChild(opt);
+  });
+
+  const button = document.createElement("button");
+  button.textContent = "Add Todo";
+
+  form.append(title, desc, date, priority, button);
+
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+
+    const project = state.projects.find(
+      (p) => p.id === state.activeProjectId
+    );
+
+    if (!project) return;
+
+    project.todos.push({
+      id: crypto.randomUUID(),
+      title: title.value,
+      description: desc.value,
+      dueDate: date.value,
+      priority: priority.value,
+      completed: false,
+    });
+
+    title.value = "";
+    desc.value = "";
+    date.value = "";
+
+    renderApp();
+  });
+
+  return form;
+}
+
 export function renderApp() {
   clear();
 
-  content.appendChild(renderProjects());
-  content.appendChild(renderTodos());
+  const wrapper = document.createElement("div");
+
+  wrapper.appendChild(projectForm());
+  wrapper.appendChild(renderProjects());
+  wrapper.appendChild(todoForm());
+  wrapper.appendChild(renderTodos());
+
+  content.appendChild(wrapper);
 }
