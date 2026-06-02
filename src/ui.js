@@ -1,4 +1,5 @@
 import { state } from "./state.js";
+import { saveToStorage } from "./storage.js";
 
 const content = document.getElementById("content");
 
@@ -15,6 +16,8 @@ function renderProjects() {
 
     btn.addEventListener("click", () => {
       state.activeProjectId = project.id;
+
+      saveToStorage(state);
       renderApp();
     });
 
@@ -52,7 +55,7 @@ function projectForm() {
   const form = document.createElement("form");
 
   const input = document.createElement("input");
-  input.placeholder = "New project";
+  input.placeholder = "New project name";
 
   const button = document.createElement("button");
   button.textContent = "Add Project";
@@ -71,6 +74,8 @@ function projectForm() {
     });
 
     input.value = "";
+
+    saveToStorage(state);
     renderApp();
   });
 
@@ -125,6 +130,7 @@ function todoForm() {
     desc.value = "";
     date.value = "";
 
+    saveToStorage(state);
     renderApp();
   });
 
