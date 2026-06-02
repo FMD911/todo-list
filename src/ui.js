@@ -16,11 +16,9 @@ function formatDate(dateStr) {
 
 function renderProjects() {
   const box = document.createElement("div");
-  box.classList.add("sidebar");
 
   state.projects.forEach((project) => {
     const wrapper = document.createElement("div");
-    wrapper.classList.add("project-item");
 
     const btn = document.createElement("button");
     btn.textContent = project.name;
@@ -33,7 +31,7 @@ function renderProjects() {
 
     const del = document.createElement("button");
     del.textContent = "X";
-    del.classList.add("delete-project");
+    del.style.background = "#ff4d4d";
 
     del.addEventListener("click", () => {
       state.projects = state.projects.filter(
@@ -41,8 +39,7 @@ function renderProjects() {
       );
 
       if (state.activeProjectId === project.id) {
-        state.activeProjectId =
-          state.projects[0]?.id || null;
+        state.activeProjectId = state.projects[0]?.id || null;
       }
 
       saveToStorage(state);
@@ -67,7 +64,6 @@ function renderTodos() {
 
   project.todos.forEach((todo) => {
     const card = document.createElement("div");
-    card.classList.add("todo-card");
 
     const title = document.createElement("h3");
     title.textContent = todo.title;
@@ -75,12 +71,12 @@ function renderTodos() {
     const desc = document.createElement("p");
     desc.textContent = todo.description;
 
-    const date = document.createElement("small");
-    date.textContent = `${formatDate(todo.dueDate)} | ${todo.priority}`;
+    const meta = document.createElement("small");
+    meta.textContent = `${formatDate(todo.dueDate)} | ${todo.priority}`;
 
     const delBtn = document.createElement("button");
     delBtn.textContent = "Delete";
-    delBtn.classList.add("danger");
+    delBtn.style.background = "#ff4d4d";
 
     delBtn.addEventListener("click", () => {
       project.todos = project.todos.filter(
@@ -91,12 +87,11 @@ function renderTodos() {
       renderApp();
     });
 
-    const editBtn = document.createElement("button");
-    editBtn.textContent = "Rename";
+    const renameBtn = document.createElement("button");
+    renameBtn.textContent = "Rename";
 
-    editBtn.addEventListener("click", () => {
+    renameBtn.addEventListener("click", () => {
       const newTitle = prompt("New title:", todo.title);
-
       if (!newTitle) return;
 
       todo.title = newTitle;
@@ -105,7 +100,7 @@ function renderTodos() {
       renderApp();
     });
 
-    card.append(title, desc, date, editBtn, delBtn);
+    card.append(title, desc, meta, renameBtn, delBtn);
     box.appendChild(card);
   });
 
@@ -119,7 +114,7 @@ function projectForm() {
   input.placeholder = "New project";
 
   const button = document.createElement("button");
-  button.textContent = "Add";
+  button.textContent = "Add Project";
 
   form.append(input, button);
 
@@ -176,7 +171,12 @@ function todoForm() {
       (p) => p.id === state.activeProjectId
     );
 
-    if (!project) return;
+    if (!project) {
+      alert("Select a project first");
+      return;
+    }
+
+    if (!title.value.trim()) return;
 
     project.todos.push({
       id: crypto.randomUUID(),
