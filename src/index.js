@@ -1,6 +1,6 @@
 import "./style.css";
+import { renderApp } from "./ui.js";
 
 console.log("Todo List started");
 
-const content = document.getElementById("content");
-content.textContent = "Todo App Loaded";
+renderApp();
