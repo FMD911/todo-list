@@ -81,3 +81,43 @@ small {
     grid-template-columns: 1fr;
   }
 }
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.project-item {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+}
+
+.delete-project {
+  width: 40px;
+  background: #ff4d4d;
+}
+
+.danger {
+  background: #ff4d4d;
+}
+
+.todo-card {
+  margin-bottom: 12px;
+}
+
+/* MOBILE */
+@media (max-width: 700px) {
+  #content > div {
+    grid-template-columns: 1fr;
+  }
+
+  form {
+    flex-direction: column;
+  }
+
+  button {
+    width: 100%;
+  }
+}
