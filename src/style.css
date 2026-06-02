@@ -1,5 +1,83 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap');
+
 body {
-  font-family: Arial, sans-serif;
   margin: 0;
+  font-family: "Inter", sans-serif;
+  background: #0f0f12;
+  color: #eaeaea;
+}
+
+#content > div {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 20px;
   padding: 20px;
+}
+
+button {
+  display: block;
+  width: 100%;
+  margin-bottom: 10px;
+  padding: 10px;
+  border: none;
+  border-radius: 8px;
+  background: #1c1c22;
+  color: #eaeaea;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+button:hover {
+  background: #2a2a33;
+}
+
+form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+input, select {
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #2a2a33;
+  background: #1c1c22;
+  color: white;
+  outline: none;
+}
+
+input:focus, select:focus {
+  border-color: #6c63ff;
+}
+
+form button {
+  background: #6c63ff;
+  border: none;
+}
+
+form button:hover {
+  background: #5750e6;
+}
+
+div > div > div {
+  background: #1c1c22;
+  padding: 15px;
+  border-radius: 12px;
+  margin-bottom: 10px;
+  border: 1px solid #2a2a33;
+}
+
+h3 {
+  margin: 0 0 5px 0;
+}
+
+small {
+  opacity: 0.7;
+}
+
+@media (max-width: 700px) {
+  #content > div {
+    grid-template-columns: 1fr;
+  }
 }
